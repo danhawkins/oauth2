@@ -129,8 +129,12 @@ module OAuth2
         opts[:params] = params
       end
       response = request(options[:token_method], token_url, opts)
-      raise Error.new(response) if options[:raise_errors] && !(response.parsed.is_a?(Hash) && response.parsed['access_token'])
-      AccessToken.from_hash(self, response.parsed.merge(access_token_opts))
+      if !(response.parsed.is_a?(Hash) && response.parsed['access_token'])
+        raise Error.new(response) if options[:raise_errors] && 
+        response
+      else
+        AccessToken.from_hash(self, response.parsed.merge(access_token_opts))
+      end
     end
 
     # The Authorization Code strategy
