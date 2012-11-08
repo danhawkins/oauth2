@@ -130,8 +130,7 @@ module OAuth2
       end
       response = request(options[:token_method], token_url, opts)
       if !(response.parsed.is_a?(Hash) && response.parsed['access_token'])
-        raise Error.new(response) if options[:raise_errors] && 
-        response
+        raise Error.new(response) if options[:raise_errors] 
       else
         AccessToken.from_hash(self, response.parsed.merge(access_token_opts))
       end
